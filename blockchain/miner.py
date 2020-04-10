@@ -26,13 +26,21 @@ def proof_of_work(last_proof):
     proof = 0
     #  TODO: Your code here
 
+    # hash the last_proof 
+    last_hash = f'{last_proof}'.encode()
+    last_hash = hashlib.sha256(last_hash).hexdigest()
+    # print('last_hash', last_hash)
+
     # continue to loop through possible proofs until valid_proof() returns True 
         # iterate proof variable by one or some random value 
 
-    while not valid_proof(last_proof, proof):
+    while not valid_proof(last_hash, proof):
         proof += 1
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
+    # current_hash = f'{proof}'.encode()
+    # current_hash = hashlib.sha256(current_hash).hexdigest()
+    # print('current_hash', current_hash)
     return proof
 
 
@@ -46,7 +54,17 @@ def valid_proof(last_hash, proof):
     """
 
     # TODO: Your code here!
-    pass
+    
+    # first hash the proof argument 
+    current_hash = f'{proof}'.encode()
+    current_hash = hashlib.sha256(current_hash).hexdigest()
+
+    # see if the first five characters of the current hash equals the last five characters of the 
+    # last_hash 
+        # if yes return True 
+        # else False 
+
+    return current_hash[:5] == last_hash[-5:]
 
 
 if __name__ == '__main__':
@@ -75,6 +93,8 @@ if __name__ == '__main__':
         print('data from the server', data)
         # the test server returns back {'proof': 80786703986} object in the last_proof endpoint 
         # so the tail block in the chain isn't being returned.
+
+        # proof_of_work(data.get('proof'))
         new_proof = proof_of_work(data.get('proof'))
 
         post_data = {"proof": new_proof,
