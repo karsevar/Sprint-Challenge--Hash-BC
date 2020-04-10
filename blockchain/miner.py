@@ -26,6 +26,12 @@ def proof_of_work(last_proof):
     proof = 0
     #  TODO: Your code here
 
+    # continue to loop through possible proofs until valid_proof() returns True 
+        # iterate proof variable by one or some random value 
+
+    while not valid_proof(last_proof, proof):
+        proof += 1
+
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
 
@@ -66,6 +72,9 @@ if __name__ == '__main__':
         # Get the last proof from the server
         r = requests.get(url=node + "/last_proof")
         data = r.json()
+        print('data from the server', data)
+        # the test server returns back {'proof': 80786703986} object in the last_proof endpoint 
+        # so the tail block in the chain isn't being returned.
         new_proof = proof_of_work(data.get('proof'))
 
         post_data = {"proof": new_proof,
@@ -78,3 +87,5 @@ if __name__ == '__main__':
             print("Total coins mined: " + str(coins_mined))
         else:
             print(data.get('message'))
+
+        break
