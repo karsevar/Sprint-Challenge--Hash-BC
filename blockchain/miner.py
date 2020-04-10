@@ -35,7 +35,7 @@ def proof_of_work(last_proof):
         # iterate proof variable by one or some random value 
 
     while not valid_proof(last_hash, proof):
-        proof += random.randint(1, 1000)
+        proof -= random.random() * 25
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     # current_hash = f'{proof}'.encode()
